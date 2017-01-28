@@ -63,6 +63,22 @@ class TestHeap:
         assert array[0] == 100501
         assert p1.get_top(array) == 100501
 
+    def test_extract_top(self):
+        """Test extract_top method."""
+        array = [33, 2, 46, 8, 49, 48, 13, 1, 13, 20]
+        ordered = [1, 2, 8, 13, 13, 20, 33, 46, 48, 49]
+        p1.heapify(array)
+
+        size = 10
+
+        while array:
+            assert len(array) == size
+            top = p1.extract_top(array)
+
+            size -= 1
+            assert len(array) == size
+            assert top == ordered.pop()
+
     def test_heap_sort(self):
         """Test heapsort."""
         array = [35, 24, 48, 18, 31, 28, 26, 9, 24, 8, 47, 27, 38, 4, 24]
