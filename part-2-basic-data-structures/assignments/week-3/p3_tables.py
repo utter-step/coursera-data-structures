@@ -1,14 +1,18 @@
 # python3
 
 
-class DisjointSetManager(object):
-    """Singleton class for managing disjoint set."""
+class DisjointSetSystemManager(object):
+    """Singleton class for managing disjoint set system."""
 
     _parents = []
     _ranks = []
 
     def __init__(self, size=0):
-        """Create new disjoint set manager with given size (default is 0)."""
+        """
+        Create new disjoint set system manager with given size.
+
+        By default, size is 0.
+        """
         self._parents = [None] * size
         self._ranks = [None] * size
 
@@ -74,7 +78,7 @@ def perform_merges(table_sizes, merges):
 
     After each merge yield size of currently largest table.
     """
-    manager = DisjointSetManager()
+    manager = DisjointSetSystemManager()
 
     for i in range(len(table_sizes)):
         manager.make_set(i)

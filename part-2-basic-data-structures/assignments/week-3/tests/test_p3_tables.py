@@ -1,6 +1,6 @@
 import pytest
 
-from p3_tables import DisjointSetManager, perform_merges
+from p3_tables import DisjointSetSystemManager, perform_merges
 
 EXAMPLE_INPUTS = (
     (
@@ -29,8 +29,8 @@ EXAMPLE_OUTPUTS = (
 )
 
 
-class TestDisjointSetManager:
-    """Test DisjointSetManager class realization."""
+class TestDisjointSetSystemManager:
+    """Test DisjointSetSystemManager class realization."""
 
     def test_set_creation(self):
         """
@@ -38,7 +38,7 @@ class TestDisjointSetManager:
 
         Each new set must have unique id.
         """
-        manager = DisjointSetManager()
+        manager = DisjointSetSystemManager()
 
         for i in range(10):
             manager.make_set(i)
@@ -52,8 +52,8 @@ class TestDisjointSetManager:
         assert len(ids) == 10, 'not all sets have unique id'
 
     def test_find(self):
-        """Test find operation of set manager."""
-        manager = DisjointSetManager()
+        """Test find operation of set system manager."""
+        manager = DisjointSetSystemManager()
 
         assert manager.find(0) is None
         assert manager.find(10) is None
@@ -77,7 +77,7 @@ class TestDisjointSetManager:
         Union method must return new_root, new_subtree — ids of merged trees,
         where second new_subtree is now subtree of new_root.
         """
-        manager = DisjointSetManager()
+        manager = DisjointSetSystemManager()
 
         for i in range(1, 13):
             manager.make_set(i)
