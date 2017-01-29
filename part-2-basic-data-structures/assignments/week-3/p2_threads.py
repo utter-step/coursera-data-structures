@@ -1,107 +1,131 @@
 # python3
 
 
-def default_gt(a, b):
-    """Default comparison operator for heap building."""
-    return a > b
+class Heap(object):
+    """Heap class with arbitrary priority comparator."""
 
+    def __init__(self, priority_gt=None):
+        """Initialize heap with given priority comparator if needed."""
+        if priority_gt is None:
+            priority_gt = Heap._default_gt
 
-def get_parent_i(i):
-    """Get index for parent in 0-indexed heap."""
-    return (i - 1) // 2
+        self._priority_gt = priority_gt
+        self._heap = []
 
+    def sift_up(self, i):
+        """Sift element at index i up the tree."""
+        parent_i = Heap.get_parent_i(i)
 
-def get_left_child_i(i):
-    """Get index for left child in 0-indexed heap."""
-    return i * 2 + 1
+        while parent_i >= 0 and self.gt(self._heap[i], self._heap[parent_i]):
+            self._heap[i], self._heap[parent_i] = (
+                self._heap[parent_i], self._heap[i])
+            i = parent_i
+            parent_i = Heap.get_parent_i(i)
 
+    def sift_down(self, i, size=None):
+        """Sift element at index i down the tree."""
+        if size is None:
+            size = len(self.heap_array)
+        was_swap = True
 
-def get_right_child_i(i):
-    """Get index for right child in 0-indexed heap."""
-    return i * 2 + 2
+        gt = self.gt
 
+        while was_swap:
+            was_swap = False
+            top_index = i
 
-def sift_up(heap, i, gt):
-    """Sift element at index i up the tree."""
-    parent_i = get_parent_i(i)
+            left_child_i = Heap.get_left_child_i(i)
+            if left_child_i < size and gt(
+                    self._heap[left_child_i], self._heap[top_index]):
+                top_index = left_child_i
 
-    while parent_i >= 0 and gt(heap[i], heap[parent_i]):
-        heap[i], heap[parent_i] = heap[parent_i], heap[i]
-        i = parent_i
-        parent_i = get_parent_i(i)
+            right_child_i = Heap.get_right_child_i(i)
+            if right_child_i < size and gt(
+                    self._heap[right_child_i], self._heap[top_index]):
+                top_index = right_child_i
 
-    return heap
+            if i != top_index and top_index < size:
+                was_swap = True
 
+                self._heap[i], self._heap[top_index] = (
+                    self._heap[top_index], self._heap[i])
+                i = top_index
 
-def sift_down(heap, i, gt, size=None):
-    """Sift element at index i down the tree."""
-    if size is None:
-        size = len(heap)
-    was_swap = True
+    def insert(self, el):
+        """Insert el to the correct position in heap."""
+        self._heap.append(el)
+        self.sift_up(len(self._heap) - 1)
 
-    while was_swap:
-        was_swap = False
-        top_index = i
+    def extract_top(self):
+        """Extract top element from heap and restructure heap afterwards."""
+        self._heap[0], self._heap[-1] = self._heap[-1], self._heap[0]
+        top_ = self._heap.pop()
 
-        left_child_i = get_left_child_i(i)
-        if left_child_i < size and gt(heap[left_child_i], heap[top_index]):
-            top_index = left_child_i
+        self.sift_down(0)
+        return top_
 
-        right_child_i = get_right_child_i(i)
-        if right_child_i < size and gt(heap[right_child_i], heap[top_index]):
-            top_index = right_child_i
+    def remove(self, i):
+        """Remove element at index i from heap."""
+        self._heap[i] = self._heap[0]
 
-        if i != top_index and top_index < size:
-            was_swap = True
+        self.sift_up(i)
+        self.extract_top()
 
-            heap[i], heap[top_index] = heap[top_index], heap[i]
-            i = top_index
+    def replace(self, i, new_value):
+        """Replace element at index i in heap and reorder heap."""
+        old = self._heap[i]
+        self._heap[i] = new_value
+        if old < new_value:
+            self.sift_up(i)
+        elif old > new_value:
+            self.sift_down(i)
 
+    def heapify(self, array):
+        """Reinitialize current heap using given array."""
+        self._heap = array
 
-def insert(heap, el, gt=default_gt):
-    """Insert el to the correct position in heap."""
-    heap.append(el)
-    sift_up(heap, len(heap) - 1, gt)
+        for i in range(len(self._heap) // 2, -1, -1):
+            self.sift_down(i)
 
+    @property
+    def top(self):
+        """Get top heap element."""
+        return self._heap[0]
 
-def get_top(heap):
-    """Get top heap element."""
-    return heap[0]
+    @property
+    def heap_array(self):
+        """Get underlying heap array."""
+        return self._heap
 
+    @property
+    def size(self):
+        """Get size of heap (number of elements in it)."""
+        return len(self._heap)
 
-def extract_top(heap, gt=default_gt):
-    """Extract top element from heap and restructure heap afterwards."""
-    heap[0], heap[-1] = heap[-1], heap[0]
-    top_ = heap.pop()
+    @property
+    def gt(self):
+        """Priority comparator of current heap."""
+        return self._priority_gt
 
-    sift_down(heap, 0, gt)
-    return top_
+    @staticmethod
+    def _default_gt(a, b):
+        """Default comparison operator for heap building."""
+        return a > b
 
+    @staticmethod
+    def get_parent_i(i):
+        """Get index for parent in 0-indexed heap."""
+        return (i - 1) // 2
 
-def remove(heap, i, gt=default_gt):
-    """Remove element at index i from heap."""
-    heap[i] = heap[0]
+    @staticmethod
+    def get_left_child_i(i):
+        """Get index for left child in 0-indexed heap."""
+        return i * 2 + 1
 
-    sift_up(heap, i, gt)
-    extract_top(heap)
-
-
-def replace(heap, i, new_value, gt=default_gt):
-    """Replace element at index i in heap and reorder heap."""
-    old = heap[i]
-    heap[i] = new_value
-    if old < new_value:
-        sift_up(heap, i, gt)
-    elif old > new_value:
-        sift_down(heap, i, gt)
-
-
-def heapify(array, gt=default_gt):
-    """Reorder given array to binary heap."""
-    for i in range(len(array) // 2, -1, -1):
-        sift_down(array, i, gt)
-
-    return array
+    @staticmethod
+    def get_right_child_i(i):
+        """Get index for right child in 0-indexed heap."""
+        return i * 2 + 2
 
 
 def thread_priority_greater(thread_a, thread_b):
@@ -125,27 +149,25 @@ def thread_priority_greater(thread_a, thread_b):
 def schedule_jobs(threads_count, jobs):
     """Problem 2 solution."""
     threads = [(i, 0) for i in range(threads_count)]
+    threads_heap = Heap(priority_gt=thread_priority_greater)
+    threads_heap.heapify(threads)
 
-    heapify(threads, gt=thread_priority_greater)
-
-    jobs_log = []
+    jobs_schedule = []
 
     for job_time in jobs:
-        (thread_id, finish_time) = extract_top(
-            threads, gt=thread_priority_greater)
+        (thread_id, finish_time) = threads_heap.extract_top()
 
-        jobs_log.append((thread_id, finish_time))
-        insert(threads, (thread_id, finish_time + job_time),
-               gt=thread_priority_greater)
+        jobs_schedule.append((thread_id, finish_time))
+        threads_heap.insert((thread_id, finish_time + job_time))
 
-    return jobs_log
+    return jobs_schedule
 
 
 if __name__ == '__main__':
     threads_count, n_jobs = map(int, input().split())
     jobs = map(int, input().split())
 
-    jobs_log = schedule_jobs(threads_count, jobs)
+    jobs_schedule = schedule_jobs(threads_count, jobs)
 
-    for thread_id, started_at in jobs_log:
-        print(thread_id, started_at)
+    for thread_id, starting_at in jobs_schedule:
+        print(thread_id, starting_at)
