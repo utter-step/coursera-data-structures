@@ -5,7 +5,7 @@ import pytest
 from p2_threads import Heap, thread_priority_greater, schedule_jobs
 
 
-TEST_PRIORITY_TEST_CASES = [
+TEST_PRIORITY_TEST_CASES = (
     ((0, 0), (1, 0), True),
     ((1, 1), (1, 0), False),
     ((0, 10), (1, 0), False),
@@ -15,13 +15,13 @@ TEST_PRIORITY_TEST_CASES = [
     ((2, 1), (4, 3), True),
     ((0, 6), (1, 6), True),
     ((3, 6), (1, 6), False),
-]
+)
 
-EXAMPLE_INPUTS = [
+EXAMPLE_INPUTS = (
     (2, (1, 2, 3, 4, 5)),
     (4, (1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)),
-]
-EXAMPLE_OUTPUTS = [
+)
+EXAMPLE_OUTPUTS = (
     [
         (0, 0),
         (1, 0),
@@ -51,8 +51,7 @@ EXAMPLE_OUTPUTS = [
         (2, 4),
         (3, 4),
     ],
-]
-EXAMPLE_DATA = zip(EXAMPLE_INPUTS, EXAMPLE_OUTPUTS)
+)
 
 
 class TestHeapClass:
@@ -145,7 +144,8 @@ class TestSolution:
         """Test threads prioritization."""
         assert thread_priority_greater(thread_a, thread_b) == expected
 
-    @pytest.mark.parametrize('input_,expected', EXAMPLE_DATA)
+    @pytest.mark.parametrize('input_,expected',
+                             zip(EXAMPLE_INPUTS, EXAMPLE_OUTPUTS))
     def test_example_cases(self, input_, expected):
         """Test on example data from problem statement."""
         threads_count, jobs = input_
