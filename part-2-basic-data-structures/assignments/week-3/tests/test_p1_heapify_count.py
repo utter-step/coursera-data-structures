@@ -132,7 +132,7 @@ class TestSolution:
         assert len(swaps) == 0
         assert swaps == []
 
-    @pytest.mark.parametrize('size', [10, 100, 1000, 10000])
+    @pytest.mark.parametrize('size', [10, 100, 1000, 10000, 100000])
     def test_random_data(self, size):
         """Test swaps counter on given data."""
         arr = [random.randrange(0, size) for _ in range(size)]
