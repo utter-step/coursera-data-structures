@@ -9,7 +9,7 @@ OPERATION_FIND = 'find'
 
 
 def get_int_hasher(m):
-    """Create arbitrary integer hasher."""
+    """Create arbitrary integer hasher with cardinality m."""
     a = random.randrange(1, P)
     b = random.randrange(0, P)
 
