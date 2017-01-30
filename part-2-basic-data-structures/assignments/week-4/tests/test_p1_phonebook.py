@@ -2,6 +2,49 @@ import pytest
 
 from p1_phonebook import HashMap, perform_phonebook_operations
 
+EXAMPLE_INPUTS = [
+    (
+        'add 911 police',
+        'add 76213 Mom',
+        'add 17239 Bob',
+        'find 76213',
+        'find 910',
+        'find 911',
+        'del 910',
+        'del 911',
+        'find 911',
+        'find 76213',
+        'add 76213 daddy',
+        'find 76213',
+    ),
+    (
+        'find 3839442',
+        'add 123456 me',
+        'add 0 granny',
+        'find 0',
+        'find 123456',
+        'del 0',
+        'del 0',
+        'find 0',
+    ),
+]
+EXAMPLE_OUTPUTS = [
+    (
+        'Mom',
+        'not found',
+        'police',
+        'not found',
+        'Mom',
+        'daddy',
+    ),
+    (
+        'not found',
+        'granny',
+        'me',
+        'not found',
+    ),
+]
+
 
 class TestHashMap:
     """Test HashMap realization."""
@@ -108,50 +151,6 @@ class TestHashMap:
         for i in range(size):
             hmap[i] = i ** 0.5
             assert hmap.load_factor < HashMap.LOAD_FACTOR_LIMIT
-
-
-EXAMPLE_INPUTS = [
-    (
-        'add 911 police',
-        'add 76213 Mom',
-        'add 17239 Bob',
-        'find 76213',
-        'find 910',
-        'find 911',
-        'del 910',
-        'del 911',
-        'find 911',
-        'find 76213',
-        'add 76213 daddy',
-        'find 76213',
-    ),
-    (
-        'find 3839442',
-        'add 123456 me',
-        'add 0 granny',
-        'find 0',
-        'find 123456',
-        'del 0',
-        'del 0',
-        'find 0',
-    ),
-]
-EXAMPLE_OUTPUTS = [
-    (
-        'Mom',
-        'not found',
-        'police',
-        'not found',
-        'Mom',
-        'daddy',
-    ),
-    (
-        'not found',
-        'granny',
-        'me',
-        'not found',
-    ),
-]
 
 
 class TestSolution:

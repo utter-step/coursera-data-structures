@@ -3,6 +3,10 @@ import random
 
 P = 2 ** 31 - 1
 
+OPERATION_ADD = 'add'
+OPERATION_DEL = 'del'
+OPERATION_FIND = 'find'
+
 
 def get_int_hasher(m):
     """Create arbitrary integer hasher."""
@@ -173,11 +177,6 @@ class HashMap(object):
     def __setitem__(self, key, value):
         """Set item via subscription syntax."""
         return self.add_or_update(key, value)
-
-
-OPERATION_ADD = 'add'
-OPERATION_DEL = 'del'
-OPERATION_FIND = 'find'
 
 
 def perform_phonebook_operations(operations):
