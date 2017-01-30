@@ -2,7 +2,7 @@ import pytest
 
 from p1_phonebook import HashMap, perform_phonebook_operations
 
-EXAMPLE_INPUTS = [
+EXAMPLE_INPUTS = (
     (
         'add 911 police',
         'add 76213 Mom',
@@ -27,8 +27,8 @@ EXAMPLE_INPUTS = [
         'del 0',
         'find 0',
     ),
-]
-EXAMPLE_OUTPUTS = [
+)
+EXAMPLE_OUTPUTS = (
     (
         'Mom',
         'not found',
@@ -43,7 +43,7 @@ EXAMPLE_OUTPUTS = [
         'me',
         'not found',
     ),
-]
+)
 
 
 class TestHashMap:
